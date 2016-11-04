@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.navercorp.jiwoo.revive.R;
 import com.navercorp.jiwoo.revive.UI.DetailTab.ExpenseCustomListAdapter;
-import com.navercorp.jiwoo.revive.UI.DetailTab.ExpenseListViewItem;
+import com.navercorp.jiwoo.revive.UI.DetailTab.ExpenseListItem;
 import com.navercorp.jiwoo.revive.UI.OverviewTab.RAdapter;
 import com.navercorp.jiwoo.revive.UI.OverviewTab.SingleCardViewItem;
 import com.navercorp.jiwoo.revive.UI.OverviewTab.TopCardViewItem;
@@ -50,7 +50,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         } else if(position == 1) {
             view = inflater.inflate(R.layout.viewpager_childview_detail ,null);
             ListView mListView = (ListView) view.findViewById(R.id.listView);
-            ArrayList<ExpenseListViewItem> expenseItems = mockData();
+            ArrayList<ExpenseListItem> expenseItems = mockData();
             ExpenseCustomListAdapter mExpenseCustomAdapter = new ExpenseCustomListAdapter(expenseItems);
             mListView.setAdapter(mExpenseCustomAdapter);
         }
@@ -104,28 +104,28 @@ public class ViewPagerAdapter extends PagerAdapter {
         return cardItems;
     }
 
-    private ArrayList<ExpenseListViewItem> mockData() {
-        ArrayList<ExpenseListViewItem> expenseItems = new ArrayList<>();
-        ExpenseListViewItem expenseListViewItem = new ExpenseListViewItem();
-        expenseListViewItem.setExpenseDate("10-06");
-        expenseListViewItem.setCardType("롯데");
-        expenseListViewItem.setExpenseDetail("파리크라상");
-        expenseListViewItem.setExpensePrice("6,400원");
-        expenseItems.add(expenseListViewItem);
+    private ArrayList<ExpenseListItem> mockData() {
+        ArrayList<ExpenseListItem> expenseItems = new ArrayList<>();
+        ExpenseListItem expenseListItem = new ExpenseListItem();
+        expenseListItem.setExpenseDate("10-06");
+        expenseListItem.setCardType("롯데");
+        expenseListItem.setExpenseDetail("파리크라상");
+        expenseListItem.setExpensePrice("6,400원");
+        expenseItems.add(expenseListItem);
 
-        expenseListViewItem = new ExpenseListViewItem();
-        expenseListViewItem.setExpenseDate("10-08");
-        expenseListViewItem.setCardType("비씨");
-        expenseListViewItem.setExpenseDetail("파리크라상2");
-        expenseListViewItem.setExpensePrice("4,400원");
-        expenseItems.add(expenseListViewItem);
+        expenseListItem = new ExpenseListItem();
+        expenseListItem.setExpenseDate("10-08");
+        expenseListItem.setCardType("비씨");
+        expenseListItem.setExpenseDetail("파리크라상2");
+        expenseListItem.setExpensePrice("4,400원");
+        expenseItems.add(expenseListItem);
 
-        expenseListViewItem = new ExpenseListViewItem();
-        expenseListViewItem.setExpenseDate("10-09");
-        expenseListViewItem.setCardType("신한");
-        expenseListViewItem.setExpenseDetail("파리크라상4");
-        expenseListViewItem.setExpensePrice("7,900원");
-        expenseItems.add(expenseListViewItem);
+        expenseListItem = new ExpenseListItem();
+        expenseListItem.setExpenseDate("10-09");
+        expenseListItem.setCardType("신한");
+        expenseListItem.setExpenseDetail("파리크라상4");
+        expenseListItem.setExpensePrice("7,900원");
+        expenseItems.add(expenseListItem);
 
         return expenseItems;
     }

@@ -5,7 +5,7 @@ import android.widget.TextView;
 /**
  * Created by Jiwoo Ma on 2016-10-17.
  */
-public class ExpenseListViewItem {
+public class ExpenseListItem {
 
     private String expenseDate;
     private String cardType;

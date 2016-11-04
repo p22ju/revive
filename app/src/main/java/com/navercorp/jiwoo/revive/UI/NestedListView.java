@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -52,6 +53,21 @@ public class NestedListView extends ListView {
             newHeight = getMeasuredHeight();
         }
         setMeasuredDimension(getMeasuredWidth(), newHeight);
+
+
+        setOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int lastItemVisible = firstVisibleItem + visibleItemCount;
+                View v = getChildAt(getChildCount() -1);
+                v.startAnimation();
+            }
+        }
     }
 
 

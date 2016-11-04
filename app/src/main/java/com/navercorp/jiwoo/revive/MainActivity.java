@@ -1,5 +1,6 @@
 package com.navercorp.jiwoo.revive;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +29,11 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewItem;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewRecyclerAdapter;
 import com.navercorp.jiwoo.revive.Util.Cheeses;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -131,9 +138,12 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public static class OverViewRecyclerViewFragment extends ListFragment {
+    public static class OverViewRecyclerViewFragment extends Fragment {
         int mNum;
         ListView mList;
+        RecyclerView recyclerView;
+        RecyclerView.Adapter rAdapter;
+        LinearLayoutManager layoutManager;
 
         /**
          * Create a new instance of CountingFragment, providing "num"
@@ -166,22 +176,88 @@ public class MainActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-            //mList = (ListView) v.findViewById(android.R.id.list);
+            recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(layoutManager);
 
+            //TODO recyclerView 어댑터 만들어줘야됨
+            ArrayList<OverViewItem> mockItems = new ArrayList();
+            OverViewItem overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한");
+            overViewItem.setTargetBudget("222");
+            overViewItem.setTotalExpense("5555");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한2");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+            overViewItem = new OverViewItem();
+            overViewItem.setCardType("신한55555555555555555555555555");
+            overViewItem.setTargetBudget("222234234");
+            overViewItem.setTotalExpense("55554443");
+            mockItems.add(overViewItem);
+
+            rAdapter = new OverViewRecyclerAdapter(getContext(), mockItems);
+            recyclerView.setAdapter(rAdapter);
+            //mList = (ListView) v.findViewById(android.R.id.list);
             return v;
         }
 
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
-
-            //TODO 내 리스트만들어주기 (제대로된 리스트어댑터 붙여줄것)
 
             //mList.setAdapter();
-
-            setListAdapter(new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
+//            setListAdapter(new ArrayAdapter<String>(getActivity(),
+//                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
         }
 
 
@@ -277,10 +353,6 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        }
 //    }
-
-
-
-
 
 }
 

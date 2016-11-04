@@ -20,6 +20,7 @@
                     android:visibility="visible">
                     <com.navercorp.jiwoo.revive.UI.WrapContentHeightViewPager
                         android:id="@+id/viewPager"
+                        android:background="#e4a0a0"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

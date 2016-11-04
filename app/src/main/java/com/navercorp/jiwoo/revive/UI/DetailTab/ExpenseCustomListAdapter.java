@@ -1,7 +1,6 @@
 package com.navercorp.jiwoo.revive.UI.DetailTab;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,9 @@ import java.util.ArrayList;
  */
 public class ExpenseCustomListAdapter extends BaseAdapter {
 
-    private ArrayList<ExpenseListViewItem> mItems = new ArrayList<>();
+    private ArrayList<ExpenseListItem> mItems = new ArrayList<>();
 
-    public ExpenseCustomListAdapter(ArrayList<ExpenseListViewItem> mItem) {
+    public ExpenseCustomListAdapter(ArrayList<ExpenseListItem> mItem) {
         this.mItems = mItem;
     }
 
@@ -51,19 +50,19 @@ public class ExpenseCustomListAdapter extends BaseAdapter {
         TextView detailTextView = (TextView) convertView.findViewById(R.id.expList_detail);
         TextView priceTextView = (TextView) convertView.findViewById(R.id.expList_price);
 
-        ExpenseListViewItem expenseListViewItem = mItems.get(position);
+        ExpenseListItem expenseListItem = mItems.get(position);
 
-        dateTextView.setText(expenseListViewItem.getExpenseDate());
-        cardTypeTextView.setText(expenseListViewItem.getCardType());
-        detailTextView.setText(expenseListViewItem.getExpenseDetail());
-        priceTextView.setText(expenseListViewItem.getExpensePrice());
+        dateTextView.setText(expenseListItem.getExpenseDate());
+        cardTypeTextView.setText(expenseListItem.getCardType());
+        detailTextView.setText(expenseListItem.getExpenseDetail());
+        priceTextView.setText(expenseListItem.getExpensePrice());
 
         return convertView;
     }
 
     //아이템 데이터 추가를 위한 함수
     public void addItem(String date, String cType, String detail, String price, String accum) {
-        ExpenseListViewItem item = new ExpenseListViewItem();
+        ExpenseListItem item = new ExpenseListItem();
 
         item.setExpenseDate(date);
         item.setCardType(cType);
