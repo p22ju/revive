@@ -29,7 +29,9 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.navercorp.jiwoo.revive.UI.NestedListView;
 import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewItem;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewListAdapter;
 import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewRecyclerAdapter;
 import com.navercorp.jiwoo.revive.Util.Cheeses;
 
@@ -86,15 +88,15 @@ public class MainActivity extends AppCompatActivity
 
     public void setUpDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        mDrawerLayout.closeDrawers();
-                        menuItem.setChecked(true);
-                        getSupportActionBar().setTitle(menuItem.getTitle());
-                        return true;
-                    }
-                });
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    mDrawerLayout.closeDrawers();
+                    menuItem.setChecked(true);
+                    getSupportActionBar().setTitle(menuItem.getTitle());
+                    return true;
+                }
+            });
     }
 
 
@@ -140,10 +142,8 @@ public class MainActivity extends AppCompatActivity
 
     public static class OverViewRecyclerViewFragment extends Fragment {
         int mNum;
-        ListView mList;
-        RecyclerView recyclerView;
-        RecyclerView.Adapter rAdapter;
-        LinearLayoutManager layoutManager;
+        NestedListView mList;
+
 
         /**
          * Create a new instance of CountingFragment, providing "num"
@@ -176,11 +176,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-            recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(getContext());
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
+            mList = (NestedListView) v.findViewById(R.id.nestedListView);
 
             //TODO recyclerView 어댑터 만들어줘야됨
             ArrayList<OverViewItem> mockItems = new ArrayList();
@@ -245,9 +241,8 @@ public class MainActivity extends AppCompatActivity
             overViewItem.setTotalExpense("55554443");
             mockItems.add(overViewItem);
 
-            rAdapter = new OverViewRecyclerAdapter(getContext(), mockItems);
-            recyclerView.setAdapter(rAdapter);
-            //mList = (ListView) v.findViewById(android.R.id.list);
+            OverViewListAdapter overViewListAdapter = new OverViewListAdapter(getContext(), mockItems);
+            mList.setAdapter(overViewListAdapter);
             return v;
         }
 
@@ -255,12 +250,9 @@ public class MainActivity extends AppCompatActivity
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            //mList.setAdapter();
 //            setListAdapter(new ArrayAdapter<String>(getActivity(),
 //                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
         }
-
-
 
 //        @Override
 //        public void onListItemClick(ListView l, View v, int position, long id) {

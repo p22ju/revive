@@ -38,7 +38,7 @@ public class RAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.singlecardview_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.singlecontainerview_layout, parent, false);
 
         ViewHolder vh = new ViewHolder(view);
         return vh;

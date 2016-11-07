@@ -55,19 +55,19 @@ public class NestedListView extends ListView {
         setMeasuredDimension(getMeasuredWidth(), newHeight);
 
 
-        setOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int lastItemVisible = firstVisibleItem + visibleItemCount;
-                View v = getChildAt(getChildCount() -1);
-                v.startAnimation();
-            }
-        }
+//        setOnScrollListener(new OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                int lastItemVisible = firstVisibleItem + visibleItemCount;
+//                View v = getChildAt(getChildCount() -1);
+//                v.startAnimation();
+//            }
+//        }
     }
 
 

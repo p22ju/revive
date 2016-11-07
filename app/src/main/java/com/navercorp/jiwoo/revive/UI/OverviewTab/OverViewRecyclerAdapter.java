@@ -27,7 +27,7 @@ public class OverViewRecyclerAdapter extends RecyclerView.Adapter<OverViewRecycl
     // 필수로 generate되어야 하는 메소드1 : 새로운 뷰 생성
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.singlecardview_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.singlecontainerview_layout, parent, false);
         MyViewHolder holder = new MyViewHolder(v);
         return holder;
     }
