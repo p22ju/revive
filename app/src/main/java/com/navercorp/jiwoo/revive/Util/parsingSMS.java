@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class parsingSMS {
 
     /**
-     * 지출내역을 추출합니다. (int로)
+     * 지출금액을 추출합니다. (int로)
      * @param originalMessage
      * @return (int) expense
      */
@@ -45,7 +45,7 @@ public class parsingSMS {
 
 
     /**
-     * 지출내역을 추출합니다. (String으로)
+     * 지출금액을 추출합니다. (String으로)
      * @param originalMessage
      * @return (String) expense
      */
