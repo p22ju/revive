@@ -38,7 +38,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         if(position == 0) {
             view = inflater.inflate(R.layout.viewpager_childview_expense, null);
-            RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+            RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_for_expense_page);
             mRecyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
             mRecyclerView.setLayoutManager(mLayoutManager);

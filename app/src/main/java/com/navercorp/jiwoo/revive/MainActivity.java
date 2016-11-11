@@ -1,6 +1,5 @@
 package com.navercorp.jiwoo.revive;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.design.widget.NavigationView;
@@ -25,15 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.navercorp.jiwoo.revive.UI.NestedListView;
-import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewItem;
-import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewListAdapter;
-import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewRecyclerAdapter;
-import com.navercorp.jiwoo.revive.Util.Cheeses;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.RAdapter;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.SingleCardViewItem;
 
 import java.util.ArrayList;
 
@@ -142,7 +134,7 @@ public class MainActivity extends AppCompatActivity
 
     public static class OverViewRecyclerViewFragment extends Fragment {
         int mNum;
-        NestedListView mList;
+        RecyclerView mRecyclerView;
 
 
         /**
@@ -176,73 +168,14 @@ public class MainActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-            mList = (NestedListView) v.findViewById(R.id.nestedListView);
-
-            //TODO recyclerView 어댑터 만들어줘야됨
-            ArrayList<OverViewItem> mockItems = new ArrayList();
-            OverViewItem overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한");
-            overViewItem.setTargetBudget("222");
-            overViewItem.setTotalExpense("5555");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한2");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-            overViewItem = new OverViewItem();
-            overViewItem.setCardType("신한55555555555555555555555555");
-            overViewItem.setTargetBudget("222234234");
-            overViewItem.setTotalExpense("55554443");
-            mockItems.add(overViewItem);
-
-            OverViewListAdapter overViewListAdapter = new OverViewListAdapter(getContext(), mockItems);
-            mList.setAdapter(overViewListAdapter);
+            mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+            //mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setAutoMeasureEnabled(true);
+            mRecyclerView.setLayoutManager(layoutManager);
+            RAdapter rAdapter = new RAdapter(mockDataForRecyclerView());
+            mRecyclerView.setAdapter(rAdapter);
             return v;
         }
 
@@ -346,9 +279,47 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
+
+     static public ArrayList<SingleCardViewItem> mockDataForRecyclerView() {
+         ArrayList<SingleCardViewItem> mocks = new ArrayList<>();
+         SingleCardViewItem singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("신한");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("111");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("BC");
+         singleCardViewItem.setExpense("2342");
+         singleCardViewItem.setTargetBudgetCut("3333");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("국민");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("44444");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("현대");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("5555");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("현대");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("666666");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("현대");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("77777");
+         mocks.add(singleCardViewItem);
+         singleCardViewItem = new SingleCardViewItem();
+         singleCardViewItem.setCardName("현대");
+         singleCardViewItem.setExpense("222");
+         singleCardViewItem.setTargetBudgetCut("888");
+         mocks.add(singleCardViewItem);
+         return  mocks;
+     }
 }
-
-
 
 
 
@@ -427,3 +398,74 @@ public class MainActivity extends AppCompatActivity
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+
+
+//    ArrayList<OverViewItem> mockItems = new ArrayList();
+//    OverViewItem overViewItem = new OverViewItem();
+//overViewItem.setCardType("신한");
+//        overViewItem.setTargetBudget("222");
+//        overViewItem.setTotalExpense("5555");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한2");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//        overViewItem = new OverViewItem();
+//        overViewItem.setCardType("신한55555555555555555555555555");
+//        overViewItem.setTargetBudget("222234234");
+//        overViewItem.setTotalExpense("55554443");
+//        mockItems.add(overViewItem);
+//
+//        OverViewListAdapter overViewListAdapter = new OverViewListAdapter(getContext(), mockItems);
+//        mRecyclerView.setAdapter(overViewListAdapter);
+
+
+
+

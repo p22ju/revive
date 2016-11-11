@@ -22,16 +22,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#44000000"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
         <!-- Here is the list. Since we are using a ListActivity, we
              have to call it "@android:id/list" so ListActivity will
              find it -->
-    <com.navercorp.jiwoo.revive.UI.NestedListView
-        android:id="@+id/nestedListView"
-        android:orientation="vertical"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
 

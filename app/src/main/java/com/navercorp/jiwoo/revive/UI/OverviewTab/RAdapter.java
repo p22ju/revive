@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by Jiwoo Ma on 2016-10-19.
  */
-public class RAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RAdapter extends RecyclerView.Adapter<RAdapter.ViewHolder> {
 
     private ArrayList<SingleCardViewItem> mItems = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class RAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // Create new views (invoked by the layout manager)
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.singlecontainerview_layout, parent, false);
 
@@ -45,9 +45,12 @@ public class RAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.mTextViewForCardType.setText(mItems.get(position).getCardName());
+        holder.mTextViewForExpense.setText(mItems.get(position).getExpense());
+        holder.mTextViewForTargetBudgetCut.setText(mItems.get(position).getTargetBudgetCut());
     }
+
 
     @Override
     public int getItemCount() {
