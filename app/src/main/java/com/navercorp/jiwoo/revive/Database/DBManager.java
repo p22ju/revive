@@ -31,6 +31,9 @@ public class DBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+
+
     public void insert(String _query) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(_query);

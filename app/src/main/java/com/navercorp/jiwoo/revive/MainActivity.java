@@ -1,9 +1,13 @@
 package com.navercorp.jiwoo.revive;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,19 +27,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.navercorp.jiwoo.revive.UI.OverviewTab.RAdapter;
-import com.navercorp.jiwoo.revive.UI.OverviewTab.SingleCardViewItem;
+import com.navercorp.jiwoo.revive.UI.DetailTab.DetailViewRecyclerAdapter;
+import com.navercorp.jiwoo.revive.Database.UserExpense.DetailViewSingleItem;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewRecyclerAdapter;
+import com.navercorp.jiwoo.revive.UI.OverviewTab.OverViewSingleItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
-    private TabLayout tabLayout;
+    private TabLayout mTabLayout;
     private MyAdapter mAdapter;
+
+    private FloatingActionButton mFloatingActionButton;
 
 //    public final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 1;
 ////    private TextView mTestTextView;
@@ -50,9 +63,61 @@ public class MainActivity extends AppCompatActivity
         ab.setDisplayHomeAsUpEnabled(true);
 
 
-        // 움직이는 라이브러리 툴바
+        //**********************************
+        // FloatingActionButton 관련
+        //**********************************
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Snackbar.make(v, "스낵바", Snackbar.LENGTH_INDEFINITE).setAction("액션", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast
+                        Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                        startActivity(intent);
+                    }
+                }).show();
+            }
+        });
+        //mFloatingActionButton.att
+
+
+        //**********************************
+        // CollapsingToolbarLayout 관련
+        //**********************************
+        // 라이브러리 상단 전체 툴바
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbarCollapse);
-        toolbarLayout.setTitle(getString(R.string.collapsingToolBar_Title_Text));
+        // 금액부분 타이틀 텍스트뷰
+        toolbarLayout.setTitle("Revive");
+        // 현재날짜 타이틀 텍스트뷰
+        TextView textViewForCurrentDate = (TextView) toolbarLayout.getChildAt(1);
+        textViewForCurrentDate.setText(getCurrentTimeString());
+
+        // 금액부분에 애니메이션을 넣어줄까 하는 부분
+        /*
+        ValueAnimator animator = new ValueAnimator();
+        animator.setObjectValues(0, 500);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+            }
+        });
+        */
+
+        //**********************************
+        // ViewPager 관련
+        //**********************************
+        // 탭 메뉴
+        mTabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        // 뷰페이저, 뷰페이저 어댑터
+        mAdapter = new MyAdapter(getSupportFragmentManager());
+        ViewPager mPager = (ViewPager) findViewById(R.id.viewPager);
+        mPager.setAdapter(mAdapter);
+        // 탭 메뉴에 뷰페이저 접합
+        mTabLayout.setupWithViewPager(mPager);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -62,21 +127,30 @@ public class MainActivity extends AppCompatActivity
         setUpDrawerContent(navigationView);
 
         getSupportActionBar().setTitle("posttesttest"); //TODO 이게 왜 drawer부분에서 바뀌는지 알아내야됨. (원래 상단부분타이틀이 맞는건데)
-
-        //**********************************
-        // ViewPager관련
-        //*********************************
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mAdapter = new MyAdapter(getSupportFragmentManager());
-        ViewPager mPager = (ViewPager) findViewById(R.id.viewPager);
-        mPager.setAdapter(mAdapter);
-        tabLayout.setupWithViewPager(mPager);
-        //TODO 위에 모습이랑 어떻게 다른지 제대로 보기
-        //ViewPagerAdapter mAdapter = new ViewPagerAdapter(getLayoutInflater(), this);  //TODO 파라미터 Fragment로 넣었고, 이전에는 Inflater 넣음. 차이확실히 찾기
-        //mPager.setAdapter(mAdapter);
-
     }
+
+
+    //TODO NonNull 이 시그니처 정확히 뭔지 파악하기
+    @NonNull
+    private String getCurrentTimeString() {
+        // 뒷부분 오늘 날짜(MM.dd) 구하기
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd");
+        Date currentTime = new Date();
+        String mTime = simpleDateFormat.format(currentTime);
+
+        // 앞부분 현재 월수(MM.01) 구하기
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(cal.MONTH);
+
+        // 구한 날짜들을 붙인다.
+        StringBuilder sb = new StringBuilder("");
+        sb.append(String.valueOf(year + 1));
+        sb.append(".01~");
+        sb.append(mTime);
+        sb.append(" (이번 달 지출)");
+        return sb.toString();
+    }
+
 
     public void setUpDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -104,6 +178,10 @@ public class MainActivity extends AppCompatActivity
         toggle.onConfigurationChanged(newConfig);
     }
 
+    //**********************************
+    // ViewPager 어댑터
+    // (FragmentStatePagerAdapter 상속)
+    //**********************************
     public static class MyAdapter extends FragmentStatePagerAdapter {
         private static final int NUM_ITEMS = 2;
 
@@ -118,20 +196,29 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
+            //TODO 더 좋은 방법 없나
             if(position == 0) {
                 return OverViewRecyclerViewFragment.newInstance(position);
             } else {
-                return OverViewRecyclerViewFragment.newInstance(position);
+                return DetailViewRecyclerViewFragment.newInstance(position);
             }
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " +( position + 1);
+            //TODO 더 좋은 방법 없나
+            if(position == 0) {
+                return "전체";
+            } else {
+                return "지출상세";
+            }
         }
     }
 
 
+    //**********************************
+    // 1. OverView 프래그먼트
+    //**********************************
     public static class OverViewRecyclerViewFragment extends Fragment {
         int mNum;
         RecyclerView mRecyclerView;
@@ -169,22 +256,21 @@ public class MainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
             mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
-            //mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setNestedScrollingEnabled(false);
             mRecyclerView.setHasFixedSize(true);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             layoutManager.setAutoMeasureEnabled(true);
+            //layoutManager.
             mRecyclerView.setLayoutManager(layoutManager);
-            RAdapter rAdapter = new RAdapter(mockDataForRecyclerView());
-            mRecyclerView.setAdapter(rAdapter);
+            OverViewRecyclerAdapter overViewRecyclerAdapter = new OverViewRecyclerAdapter(mockDataForRecyclerView());
+            mRecyclerView.setAdapter(overViewRecyclerAdapter);
             return v;
         }
 
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-
-//            setListAdapter(new ArrayAdapter<String>(getActivity(),
-//                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
+          //setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
         }
 
 //        @Override
@@ -192,6 +278,68 @@ public class MainActivity extends AppCompatActivity
 //            Log.i("FragmentList", "Item clicked: " + id);
 //        }
     }
+
+
+    //**********************************
+    // 2. DetailView 프래그먼트
+    //**********************************
+    public static class DetailViewRecyclerViewFragment extends Fragment {
+        int mNum;
+        RecyclerView mRecyclerView;
+
+        /**
+         * Create a new instance of CountingFragment, providing "num"
+         * as an argument.
+         */
+        static DetailViewRecyclerViewFragment newInstance(int num) {
+            DetailViewRecyclerViewFragment f = new DetailViewRecyclerViewFragment();
+
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putInt("num", num + 1);
+            f.setArguments(args);
+
+            return f;
+        }
+
+        /**
+         * When creating, retrieve this instance's number from its arguments.
+         */
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+        }
+
+        /**
+         * The Fragment's UI is just a simple text view showing its
+         * instance number.
+         */
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
+            mRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+            mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            layoutManager.setAutoMeasureEnabled(true);
+            mRecyclerView.setLayoutManager(layoutManager);
+            DetailViewRecyclerAdapter overViewRecyclerAdapter = new DetailViewRecyclerAdapter(mockDataForRecyclerViewForDetail());
+            mRecyclerView.setAdapter(overViewRecyclerAdapter);
+            return v;
+        }
+
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+        }
+
+//        @Override
+//        public void onListItemClick(ListView l, View v, int position, long id) {
+//            Log.i("FragmentList", "Item clicked: " + id);
+//        }
+    }
+
 
 
 
@@ -280,45 +428,123 @@ public class MainActivity extends AppCompatActivity
 //    }
 
 
-     static public ArrayList<SingleCardViewItem> mockDataForRecyclerView() {
-         ArrayList<SingleCardViewItem> mocks = new ArrayList<>();
-         SingleCardViewItem singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("신한");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("111");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("BC");
-         singleCardViewItem.setExpense("2342");
-         singleCardViewItem.setTargetBudgetCut("3333");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("국민");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("44444");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("현대");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("5555");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("현대");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("666666");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("현대");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("77777");
-         mocks.add(singleCardViewItem);
-         singleCardViewItem = new SingleCardViewItem();
-         singleCardViewItem.setCardName("현대");
-         singleCardViewItem.setExpense("222");
-         singleCardViewItem.setTargetBudgetCut("888");
-         mocks.add(singleCardViewItem);
+     static public ArrayList<OverViewSingleItem> mockDataForRecyclerView() {
+         ArrayList<OverViewSingleItem> mocks = new ArrayList<>();
+         OverViewSingleItem overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("신한");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("111");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("BC");
+         overViewSingleItem.setCurrentSpending("2342");
+         overViewSingleItem.setTargetBudget("3333");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("국민");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("44444");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("현대");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("5555");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("현대");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("666666");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("현대");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("77777");
+         mocks.add(overViewSingleItem);
+         overViewSingleItem = new OverViewSingleItem();
+         overViewSingleItem.setCardType("현대");
+         overViewSingleItem.setCurrentSpending("222");
+         overViewSingleItem.setTargetBudget("888");
+         mocks.add(overViewSingleItem);
          return  mocks;
      }
+
+
+    static public ArrayList<DetailViewSingleItem> mockDataForRecyclerViewForDetail() {
+        ArrayList<DetailViewSingleItem> mocks = new ArrayList<>();
+        DetailViewSingleItem detailViewSingleItem = new DetailViewSingleItem();
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(5500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        detailViewSingleItem.setCardType("신한");
+        detailViewSingleItem.setExpenseDate("10/02");
+        detailViewSingleItem.setExpenseDesc("파리크라상");
+        detailViewSingleItem.setExpenditure(6500);
+        mocks.add(detailViewSingleItem);
+        return  mocks;
+    }
+
 }
 
 

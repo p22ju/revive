@@ -4,34 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-
-
-        <com.navercorp.jiwoo.revive.UI.MyNestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-                <LinearLayout
-                    android:id="@+id/lin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible">
-                    <com.navercorp.jiwoo.revive.UI.WrapContentHeightViewPager
-                        android:id="@+id/viewPager"
-                        android:background="#e4a0a0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-        </com.navercorp.jiwoo.revive.UI.MyNestedScrollView>
+    android:layout_height="match_parent">
 
 
 
-        <android.support.design.widget.AppBarLayout
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
                 <android.support.design.widget.CollapsingToolbarLayout
@@ -39,19 +21,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
+                    app:expandedTitleGravity="left|bottom"
+                    app:collapsedTitleGravity="center"
                     app:statusBarScrim="#40ADD8"
                     app:contentScrim="#40ADD8"
                     app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
-                    <ImageView
+                    <FrameLayout
+                        android:id="@+id/titleView"
                         android:layout_width="match_parent"
-                        android:layout_height="190dp"
+                        android:layout_height="200dp"
                         android:background="#40ADD8"
                         app:layout_collapseMode="parallax" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="70dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_gravity="bottom|left|end"
+                        android:text="오늘날짜테스트"/>
+
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin"
                         android:fitsSystemWindows="false"/>
                 </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -62,17 +54,31 @@
                     android:background="#40ADD8"
                     app:tabIndicatorColor="#FFFF8D"/>
 
-        </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>
 
+    <com.navercorp.jiwoo.revive.UI.MyNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
+        <com.navercorp.jiwoo.revive.UI.WrapContentHeightViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_dialog_email"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    </com.navercorp.jiwoo.revive.UI.MyNestedScrollView>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_dialog_email"
+        app:layout_anchor="@+id/titleView"
+        app:layout_anchorGravity="bottom|right"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

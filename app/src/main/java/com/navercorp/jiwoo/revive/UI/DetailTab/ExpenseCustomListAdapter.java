@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.navercorp.jiwoo.revive.Database.UserExpense.DetailViewSingleItem;
 import com.navercorp.jiwoo.revive.R;
 
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
  */
 public class ExpenseCustomListAdapter extends BaseAdapter {
 
-    private ArrayList<ExpenseListItem> mItems = new ArrayList<>();
+    private ArrayList<DetailViewSingleItem> mItems = new ArrayList<>();
 
-    public ExpenseCustomListAdapter(ArrayList<ExpenseListItem> mItem) {
+    public ExpenseCustomListAdapter(ArrayList<DetailViewSingleItem> mItem) {
         this.mItems = mItem;
     }
 
@@ -50,25 +51,24 @@ public class ExpenseCustomListAdapter extends BaseAdapter {
         TextView detailTextView = (TextView) convertView.findViewById(R.id.expList_detail);
         TextView priceTextView = (TextView) convertView.findViewById(R.id.expList_price);
 
-        ExpenseListItem expenseListItem = mItems.get(position);
+        DetailViewSingleItem detailViewSingleItem = mItems.get(position);
 
-        dateTextView.setText(expenseListItem.getExpenseDate());
-        cardTypeTextView.setText(expenseListItem.getCardType());
-        detailTextView.setText(expenseListItem.getExpenseDetail());
-        priceTextView.setText(expenseListItem.getExpensePrice());
+        dateTextView.setText(detailViewSingleItem.getExpenseDate());
+        cardTypeTextView.setText(detailViewSingleItem.getCardType());
+        detailTextView.setText(detailViewSingleItem.getExpenseDesc());
+        priceTextView.setText(detailViewSingleItem.getExpenditure());
 
         return convertView;
     }
 
     //아이템 데이터 추가를 위한 함수
-    public void addItem(String date, String cType, String detail, String price, String accum) {
-        ExpenseListItem item = new ExpenseListItem();
+    public void addItem(String date, String cType, String detail, int price) {
+        DetailViewSingleItem item = new DetailViewSingleItem();
 
         item.setExpenseDate(date);
         item.setCardType(cType);
-        item.setExpenseDetail(detail);
-        item.setExpensePrice(price);
-        item.setAccumulatedExpense(accum);
+        item.setExpenseDesc(detail);
+        item.setExpenditure(price);
 
         mItems.add(item);
     }

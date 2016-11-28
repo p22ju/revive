@@ -3,7 +3,7 @@ package com.navercorp.jiwoo.revive.UI.OverviewTab;
 /**
  * Created by Jiwoo Ma on 2016-10-20.
  */
-public class TopCardViewItem extends SingleCardViewItem {
+public class OverViewTopItem extends OverViewSingleItem {
 
     private String topFixedTitle;
 

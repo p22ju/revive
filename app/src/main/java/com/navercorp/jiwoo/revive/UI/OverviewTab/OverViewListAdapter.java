@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class OverViewListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<OverViewItem> mItems;
+    private ArrayList<OverViewSingleItem> mItems;
 
-    public OverViewListAdapter(Context context, ArrayList<OverViewItem> items) {
+    public OverViewListAdapter(Context context, ArrayList<OverViewSingleItem> items) {
         mContext = context;
         mItems = items;
     }
@@ -40,20 +40,20 @@ public class OverViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        OverViewItem overViewItem = mItems.get(position);
+        OverViewSingleItem overViewItem = mItems.get(position);
 
         if(convertView == null) {
             // TODO null, parent 차이
-            convertView = View.inflate(parent.getContext(), R.layout.singlecontainerview_layout, null);
+            convertView = View.inflate(parent.getContext(), R.layout.layout_overview_single, null);
         }
 
-        TextView textViewForCardType = (TextView) convertView.findViewById(R.id.overviewList_cardType);
-        TextView textViewForBudget = (TextView) convertView.findViewById(R.id.overviewList_targetBudget);
-        TextView textViewForTotal = (TextView) convertView.findViewById(R.id.overviewList_expense);
+        TextView textViewForCardType = (TextView) convertView.findViewById(R.id.overviewList_card_type);
+        TextView textViewForBudget = (TextView) convertView.findViewById(R.id.overviewList_target_budget);
+        TextView textViewForCurrentSpending = (TextView) convertView.findViewById(R.id.overviewList_current_spending);
 
         textViewForCardType.setText(overViewItem.getCardType());
         textViewForBudget.setText(overViewItem.getTargetBudget());
-        textViewForTotal.setText(overViewItem.getTotalExpense());
+        textViewForCurrentSpending.setText(overViewItem.getCurrentSpending());
 
         return convertView;
     }

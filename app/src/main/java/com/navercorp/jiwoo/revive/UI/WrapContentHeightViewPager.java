@@ -9,6 +9,7 @@ import android.view.View;
  * Created by Jiwoo Ma on 2016-10-25.
  */
 public class WrapContentHeightViewPager extends ViewPager {
+
     public WrapContentHeightViewPager(Context context) {
         super(context);
     }
